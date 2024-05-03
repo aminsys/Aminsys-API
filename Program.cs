@@ -9,12 +9,10 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Remember to remove this IF this app is ever used in production
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseAuthorization();
 
