@@ -1,5 +1,7 @@
-﻿using aminsys_api.Model;
+﻿using System.Diagnostics;
+using aminsys_api.Model;
 using Microsoft.AspNetCore.Mvc;
+using DotNetEnv;
 
 namespace aminsys_api.Controllers
 {
@@ -7,19 +9,18 @@ namespace aminsys_api.Controllers
     [Route("[controller]")]
     public class UsernameController : ControllerBase
     {
-
-
         private readonly List<string> subjects = new List<string>
         {   "Car",
             "Meal",
             "PC",
             "Brother",
             "Empress",
-            "Doctor"
+            "Doctor",
+            "One"
         };
 
         private readonly List<string> descriptions = new List<string>
-        {   "TheReal",
+        {   "The Real",
             "Invincible",
             "Mystic",
             "Aloof",
@@ -45,7 +46,7 @@ namespace aminsys_api.Controllers
 
             return new Username {
                 Id = Guid.NewGuid(),
-                UsernameString = u1 + " " + u2 
+                UsernameString = u1 + " " + u2
             };
         }
     }

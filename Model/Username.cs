@@ -1,8 +1,6 @@
-﻿namespace aminsys_api.Model
+﻿namespace aminsys_api.Model;
+public class Username
 {
-    public class Username
-    {
-        public Guid Id { get; set; }
-        public required string UsernameString { get; set; }
-    }
+    public Guid Id { get; set; }
+    public required string UsernameString { get; set; }
 }
