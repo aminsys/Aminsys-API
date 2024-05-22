@@ -62,11 +62,22 @@ public class PeopleService
                         }
                     }
                 }
+            }),
+            new BsonDocument("$unwind", "$registrations"),
+            new BsonDocument("$sort", new BsonDocument
+            {
+                { "registrations.date", 1 } // 1 ascending sort, -1 descending sort
+            }),
+            new BsonDocument("$group", new BsonDocument
+            {
+                { "_id", "$_id" },
+                { "person", new BsonDocument("$first", "$person") },
+                { "registrations", new BsonDocument("$push", "$registrations") }
             })
         };
 
         var result = await _peopleCollection.Aggregate<People>(pipeline).ToListAsync();
-        
+
         return result;
     }
 }
