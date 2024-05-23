@@ -18,8 +18,21 @@ public class PeopleService
         _peopleCollection = mongoDabase.GetCollection<People>(peopleDatabaseSettings.Value.CollectionName);
     }
 
-    public async Task<List<People>> GetAsync() =>
-        await _peopleCollection.Find(_ => true).ToListAsync();
+    public async Task<List<People>> GetAsync()
+    {
+        var projection = Builders<People>.Projection.Expression(p => new People
+        {
+            Person = new Person
+            {
+                Id = p.Person.Id,
+                Name = p.Person.Name,
+                Email = p.Person.Email
+            }
+        });
+
+        var result = await _peopleCollection.Find(_ => true).Project(projection).ToListAsync();
+        return result;
+    }
 
     public async Task<People> GetAsync(int personId) =>
         await _peopleCollection.Find(p => p.Person.Id == personId).FirstOrDefaultAsync();
@@ -28,15 +41,6 @@ public class PeopleService
     {
         var pipeline = new BsonDocument[]
         {
-            new BsonDocument("$match", new BsonDocument
-            {
-                { "registrations.date", new BsonDocument
-                    {
-                        { "$gte", fromDate },
-                        { "$lte", toDate }
-                    }
-                }
-            }),
             new BsonDocument("$project", new BsonDocument
             {
                 { "person.name", 1 },
